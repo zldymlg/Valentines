@@ -1,0 +1,218 @@
+:root {
+    --primary: #ffe4e1; /* Soft pink */
+    --bg-color: linear-gradient(to bottom, #ffafbd, #ffc3a0); /* Pinkish-red gradient */
+    --bg-envelope-color: #ffcad4; /* Light pink envelope */
+    --envelope-tab: #ffb3c6; /* Slightly darker pink */
+    --envelope-cover: #ff9aa2; /* Soft red */
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --txt-color: #b71c1c; /* Dark red text */
+    --heart-color: #ff1744; /* Bright red */
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: var(--bg-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .container {
+    height: 100vh;
+    display: grid;
+    place-items: center;
+  }
+  
+  .container > .envelope-wrapper {
+    background: var(--bg-envelope-color);
+    box-shadow: 0 0 40px var(--shadow-color);
+    border-radius: 10px;
+  }
+  
+  .envelope-wrapper > .envelope {
+    position: relative;
+    width: 300px;
+    height: 230px;
+  }
+  
+  .envelope-wrapper > .envelope::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    border-top: 130px solid var(--envelope-tab);
+    border-right: 150px solid transparent;
+    border-left: 150px solid transparent;
+    transform-origin: top;
+    transition: all 0.5s ease-in-out 0.7s;
+  }
+  
+  .envelope-wrapper > .envelope::after {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    width: 0px;
+    height: 0px;
+    border-top: 130px solid transparent;
+    border-right: 150px solid var(--envelope-cover);
+    border-bottom: 100px solid var(--envelope-cover);
+    border-left: 150px solid var(--envelope-cover);
+  }
+  
+  .envelope > .letter {
+    position: absolute;
+    right: 20%;
+    bottom:0px;
+    width: 54%;
+    height: 80%;
+    background: var(--primary);
+    text-align: center;
+    transition: all 1s ease-in-out;
+    box-shadow: 0 0 5px var(--shadow-color);
+    padding: 20px 10px;
+    z-index: 0;
+    overflow-y: auto;
+    max-height: 100%;
+    border-radius: 10px;
+  }
+  
+  .letter::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .letter::-webkit-scrollbar-track {
+    background: #ffc3a0; 
+    border-radius: 10px;
+  }
+  
+  .letter::-webkit-scrollbar-thumb {
+    background: #ff1744;
+    border-radius: 10px;
+  }
+  
+  .letter::-webkit-scrollbar-thumb:hover {
+    background: #d50000; 
+  }
+  
+  .envelope > .letter > .text {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: var(--txt-color);
+    text-align: left;
+    font-size: 10px;
+    opacity: 0; /* Hide text by default */
+    transition: opacity 1s ease-in-out;
+  }
+  
+  .heart {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 15px;
+    height: 15px;
+    background: var(--heart-color);
+    z-index: 2;
+    transform: translate(-50%, -20%) rotate(45deg);
+    transition: transform 0.5s ease-in-out 1s;
+    box-shadow: 0 1px 6px var(--shadow-color);
+    cursor: pointer;
+  }
+  
+  .heart:before, 
+  .heart:after {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: var(--heart-color);
+    border-radius: 50%;
+  }
+  
+  .heart:before {
+    top: -7.5px;
+  }
+  
+  .heart:after {
+    right: 7.5px;
+  }
+  
+  .flap > .envelope:before {
+    transform: rotateX(180deg);
+    z-index: 0;
+  }
+  
+  .flap > .envelope > .letter {
+    bottom: 100px;
+    transform: scale(1.5);
+    transition-delay: 1s;
+    z-index: 3;
+  }
+  
+  .flap > .heart {
+    transform: rotate(90deg);
+    transition-delay: 0.4s;
+  }
+  
+  .flap .envelope > .letter > .text {
+    opacity: 1;
+    transition-delay: 1s;
+  }
+  .bubbles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+  }
+  
+  .bubbles::before,
+  .bubbles::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255,255,255,0.6) 10%, transparent 50%);
+      animation: bubble-animation 8s infinite linear;
+  }
+  
+  .bubbles::after {
+      animation-duration: 10s;
+      animation-delay: 3s;
+  }
+  
+  @keyframes bubble-animation {
+      0% {
+          transform: translateY(100vh) scale(0.3);
+          opacity: 0;
+      }
+      50% {
+          opacity: 1;
+      }
+      100% {
+          transform: translateY(-10vh) scale(1);
+          opacity: 0;
+      }
+  }
+  .flowers {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  
+  @keyframes floatFlower {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-10vh) rotate(360deg);
+        opacity: 0;
+    }
+  }
