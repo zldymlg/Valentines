@@ -16,14 +16,12 @@ export default function AuthPage() {
   const [fullName, setFullName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Sign Up or Log In handler
   const handleAuth = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setErrorMessage("");
 
     try {
       if (isSignUp) {
-        // Check if the email is already registered
         const signInMethods = await fetchSignInMethodsForEmail(auth, email);
         if (signInMethods.length > 0) {
           throw new Error("Email already in use. Please log in instead.");
@@ -41,7 +39,7 @@ export default function AuthPage() {
         await setDoc(doc(db, "users", user.uid), {
           fullName: fullName,
           email: email,
-          createdAt: serverTimestamp(), // Use Firebase timestamp
+          createdAt: serverTimestamp(),
         });
 
         window.location.href = "/Letter.html";
