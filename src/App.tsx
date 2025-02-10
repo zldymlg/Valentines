@@ -42,10 +42,10 @@ export default function AuthPage() {
           createdAt: serverTimestamp(),
         });
 
-        window.location.href = "/Letter.html";
+        window.location.href = "/letter.html";
       } else {
         await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = "/Intro.html";
+        window.location.href = "/intro.html";
       }
     } catch (error) {
       setErrorMessage("error pls try again");
