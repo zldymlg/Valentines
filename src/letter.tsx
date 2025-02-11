@@ -100,6 +100,7 @@ const LetterCreation: React.FC = () => {
             </form>
           </div>
         </div>
+        <div className="footer"></div>
       </motion.div>
     </div>
   );

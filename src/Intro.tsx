@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Intro.css";
 import Music from "./assets/akonalang.mp3";
 
 function App() {
+  const navigate = useNavigate();
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -18,20 +20,20 @@ function App() {
   const [y, setY] = useState<number>(55);
   const [gif, setGif] = useState<string | null>(null);
 
-  const form = useRef<HTMLFormElement>(null);
   const body = document.querySelector("body") as HTMLBodyElement | null;
 
   useEffect(() => {
     if (!body) {
-      throw new Error("Body element not found.");
+      console.error("Body element not found.");
+      return;
     }
 
     const createFlower = (): void => {
       const flower = document.createElement("div");
       flower.className = "flower";
       flower.textContent = "🌸";
-      flower.style.left = Math.random() * 900 + "vw";
-      flower.style.animationDuration = Math.random() * 4 + 4 + "s"; // Random animation duration
+      flower.style.left = Math.random() * 90 + "vw";
+      flower.style.animationDuration = Math.random() * 4 + 4 + "s";
       flower.style.animation = "fallDown 5s linear infinite";
 
       body.appendChild(flower);
@@ -40,7 +42,7 @@ function App() {
       }, 5000);
     };
 
-    const flowerInterval = setInterval(createFlower, 10);
+    const flowerInterval = setInterval(createFlower, 100);
     return () => clearInterval(flowerInterval);
   }, [body]);
 
@@ -62,10 +64,9 @@ function App() {
     }
   }
 
-  // Function to handle YES button click
   function handleYesClick(event: React.FormEvent) {
-    event.preventDefault(); // Prevent form submission behavior
-    window.location.href = "product.html"; // Redirect to product.html
+    event.preventDefault(); //
+    navigate("/product"); //
   }
 
   // Define button styles
@@ -104,7 +105,7 @@ function App() {
         {gif && <img src={gif} alt="Funny reaction" style={gifStyle} />}
         <p className="pre-valentine">Will you be my</p>
         <p className="valentine">Valentine</p>
-        <form ref={form} onSubmit={handleYesClick}>
+        <form onSubmit={handleYesClick}>
           <button style={yesStyle} type="submit">
             YES!
           </button>
@@ -117,6 +118,7 @@ function App() {
           no
         </button>
       </>
+      <div className="footer"></div>
     </React.Fragment>
   );
 }

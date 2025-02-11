@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "./firebase"; // Import Firebase config
+import { auth, db } from "./firebase";
 import "./product.css";
 import music from "./assets/kai.mp3";
 
@@ -8,11 +8,12 @@ const LoveMonthPage: React.FC = () => {
   const [message, setMessage] = useState("");
   const [penname, setPenname] = useState("");
   const [toWhom, setToWhom] = useState("");
+  const [isFlapOpen, setIsFlapOpen] = useState(false);
 
   useEffect(() => {
     const fetchLetter = async () => {
-      const user = auth.currentUser; // Get user state
-      if (!user) return; // Avoid unnecessary Firestore calls
+      const user = auth.currentUser;
+      if (!user) return;
 
       const userRef = doc(db, "users", user.email!);
       const userSnap = await getDoc(userRef);
@@ -34,7 +35,6 @@ const LoveMonthPage: React.FC = () => {
       }
     };
 
-    // Wait for authentication state to change
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) fetchLetter();
     });
@@ -42,41 +42,10 @@ const LoveMonthPage: React.FC = () => {
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    const envelope = document.querySelector(".envelope-wrapper");
-    if (!envelope) return;
-
-    const handleClick = () => {
-      envelope.classList.toggle("flap");
-    };
-
-    envelope.addEventListener("click", handleClick);
-    return () => envelope.removeEventListener("click", handleClick);
-  }, []);
-
-  // Floating Flowers Effect
-  useEffect(() => {
-    const flowerContainer = document.querySelector(".flowers");
-    if (!flowerContainer) return;
-
-    function createFlower() {
-      let flower = document.createElement("div");
-      flower.classList.add("flower");
-      flower.innerHTML = "🌸";
-      flower.style.position = "absolute";
-      flower.style.left = `${Math.random() * 100}vw`;
-      flower.style.animation = `floatFlower ${
-        Math.random() * 10 + 10
-      }s linear infinite`;
-      flower.style.fontSize = `${Math.random() * 20 + 20}px`;
-      // flowerContainer.appendChild(flower);
-
-      setTimeout(() => flower.remove(), 10000);
-    }
-
-    const intervalId = setInterval(createFlower, 1000);
-    return () => clearInterval(intervalId);
-  }, []);
+  // ✅ FIX: Properly toggle flap with state
+  const handleEnvelopeClick = () => {
+    setIsFlapOpen((prev) => !prev);
+  };
 
   return (
     <div>
@@ -89,7 +58,10 @@ const LoveMonthPage: React.FC = () => {
       <div className="flowers"></div>
 
       <div className="container">
-        <div className="envelope-wrapper">
+        <div
+          className={`envelope-wrapper ${isFlapOpen ? "flap" : ""}`}
+          onClick={handleEnvelopeClick}
+        >
           <div className="envelope">
             <div className="letter">
               <div className="text">
@@ -102,6 +74,7 @@ const LoveMonthPage: React.FC = () => {
           <div className="heart"></div>
         </div>
       </div>
+      <div className="footer"></div>
     </div>
   );
 };
